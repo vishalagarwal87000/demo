@@ -35,4 +35,13 @@ public class TicketServiceImpl implements TicketService {
 		return data;
 	}
 
+	public List<Ticket> addTicket( Ticket ticket){
+		List<Ticket> data = null;
+		data = dao.addTicket(ticket);
+
+		return data;
+		
+		
+	}
+	
 }

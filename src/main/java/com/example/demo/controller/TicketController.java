@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.constants.UrlConstants;
@@ -37,6 +39,22 @@ public class TicketController {
 			e.printStackTrace();
 		}
 		return new ResponseEntity<>(data, HttpStatus.OK);
+	}
+	
+	@PostMapping("/api/addTicket")
+	private ResponseEntity<Object> addTicket(@RequestBody Ticket ticket ){
+		List<Ticket> data = new ArrayList<Ticket>();
+try {
+	data= service.addTicket(ticket);
+}
+catch(Exception e)
+{
+	e.printStackTrace();
+}
+	
+	return new ResponseEntity<>(data, HttpStatus.OK);
+
+
 	}
 	
 //	@GetMapping("/getTicket")

@@ -15,4 +15,6 @@ public interface TicketService {
 
 	List<Ticket> getTicket();
 
+	List<Ticket> addTicket(Ticket ticket);
+
 }

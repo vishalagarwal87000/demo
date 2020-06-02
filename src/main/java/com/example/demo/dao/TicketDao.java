@@ -15,4 +15,6 @@ public interface TicketDao {
 	
 	public List<Ticket> getTicket();
 
+	public List<Ticket> addTicket(Ticket ticket);
+
 }
