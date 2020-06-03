@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -40,5 +41,17 @@ public class TicketDaoImpl implements TicketDao {
 		}
 		return tickets;
 	}
+	
+	public List<Ticket> addTicket(Ticket ticket){
+		List<Ticket> tickets =new ArrayList<Ticket>();
+		String sql1 = TicketUtility.readProperties("addTickets");
+		String sql2 = TicketUtility.readProperties("showTickets");
 
+		int result= jdbcTemplate.update(sql1,ticket.getId(),ticket.getAmount(),ticket.getCategory());
+		if( result ==1) {
+			tickets = jdbcTemplate.query(sql2, new TicketRowMapper());
+		}
+		return tickets;
+	}
 }
+
