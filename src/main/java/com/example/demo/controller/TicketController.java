@@ -10,11 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.constants.UrlConstants;
+import com.example.demo.dto.NewTicketDto;
 import com.example.demo.model.Ticket;
 import com.example.demo.service.TicketService;
 
@@ -25,10 +25,10 @@ import com.example.demo.service.TicketService;
  */
 @Controller
 public class TicketController {
-	
+
 	@Autowired
 	private TicketService service;
-	
+
 	@RequestMapping(value = UrlConstants.GET_TICKET)
 	private ResponseEntity<Object> getTicket() {
 		List<Ticket> data = new ArrayList<Ticket>();
@@ -40,27 +40,30 @@ public class TicketController {
 		}
 		return new ResponseEntity<>(data, HttpStatus.OK);
 	}
-	
-	@PostMapping("/api/addTicket")
-	private ResponseEntity<Object> addTicket(@RequestBody Ticket ticket ){
-		List<Ticket> data = new ArrayList<Ticket>();
-try {
-	data= service.addTicket(ticket);
-}
-catch(Exception e)
-{
-	e.printStackTrace();
-}
-	
-	return new ResponseEntity<>(data, HttpStatus.OK);
 
+	@RequestMapping(value = UrlConstants.ADD_TICKET)
+	private ResponseEntity<Object> addTicket(@RequestBody NewTicketDto newTicketDto) {
+		List<Ticket> data = new ArrayList<Ticket>();
+		try {
+			data = service.addTicket(newTicketDto);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return new ResponseEntity<>(data, HttpStatus.OK);
 
 	}
-	
-//	@GetMapping("/getTicket")
-//	private List<Ticket> getTicket(){
-//		return (List<Ticket>) dao.findAll();
-//	}
-	
+
+	@RequestMapping(value = UrlConstants.GET_TICKET_DETAILS)
+	private ResponseEntity<Object> getTicketDetails(@RequestBody Ticket ticket) {
+		NewTicketDto data =new NewTicketDto();
+		try {
+			data = service.getTicketDetails(ticket);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new ResponseEntity<>(data, HttpStatus.OK);
+	}
 
 }

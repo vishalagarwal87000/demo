@@ -19,9 +19,9 @@ public class TicketRowMapper implements RowMapper<Ticket> {
 	@Override
 	public Ticket mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Ticket t = new Ticket();
-		t.setId(rs.getInt("id"));
-		t.setCategory(rs.getString("category"));
-		t.setAmount(rs.getInt("amount"));
+		t.setId(rs.getInt("ID"));
+		t.setCategory(rs.getString("CATEGORY"));
+		t.setAmount(rs.getDouble("AMOUNT"));
 		return t;
 
 	}
