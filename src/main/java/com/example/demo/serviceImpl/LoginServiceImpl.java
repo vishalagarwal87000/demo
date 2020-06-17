@@ -30,16 +30,16 @@ public class LoginServiceImpl implements LoginService {
 	}
 
 	@Override
-	public int getUserDetails(String username) {
+	public User getUserDetails(String username) {
 		// TODO Auto-generated method stub
-		int access = 0;
+		User user = null;
 		try {
-			access = dao.getUserDetails(username);
+			user = dao.getUserDetails(username);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return access;
+		return user;
 	}
 
 	@Override

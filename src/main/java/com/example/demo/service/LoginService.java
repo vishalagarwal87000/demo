@@ -9,7 +9,7 @@ public interface LoginService {
 
 	List<DropdownDto> getRoles();
 
-	int getUserDetails(String username);
+	User getUserDetails(String username);
 
 	int newUserDetails(User userDetails);
 

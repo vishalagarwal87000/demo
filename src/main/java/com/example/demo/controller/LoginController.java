@@ -36,14 +36,14 @@ public class LoginController {
 	
 	@RequestMapping(value = UrlConstants.GET_USER_DETAILS)
 	public ResponseEntity<Object> getUserDetails(@RequestParam("username") String username){
-		int access = 0;
+		User user = new User();
 		try {
-			access = service.getUserDetails(username);
+			user = service.getUserDetails(username);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return new ResponseEntity<>(access, HttpStatus.OK);
+		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = UrlConstants.NEW_USER_DETAILS)

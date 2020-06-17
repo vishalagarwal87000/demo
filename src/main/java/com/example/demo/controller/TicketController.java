@@ -3,9 +3,6 @@
  */
 package com.example.demo.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.constants.UrlConstants;
 import com.example.demo.dto.NewTicketDto;
+import com.example.demo.dto.TicketRequestDto;
+import com.example.demo.dto.TicketResponseDto;
 import com.example.demo.model.Ticket;
 import com.example.demo.service.TicketService;
 
@@ -30,33 +29,33 @@ public class TicketController {
 	private TicketService service;
 
 	@RequestMapping(value = UrlConstants.GET_TICKET)
-	private ResponseEntity<Object> getTicket() {
-		List<Ticket> data = new ArrayList<Ticket>();
+	private ResponseEntity<Object> getTicket(@RequestBody TicketRequestDto ticketRequestDto) {
+		TicketResponseDto response = new TicketResponseDto();
 		try {
-			data = service.getTicket();
+			response = service.getTicket(ticketRequestDto);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return new ResponseEntity<>(data, HttpStatus.OK);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = UrlConstants.ADD_TICKET)
 	private ResponseEntity<Object> addTicket(@RequestBody NewTicketDto newTicketDto) {
-		List<Ticket> data = new ArrayList<Ticket>();
+		TicketResponseDto response = new TicketResponseDto();
 		try {
-			data = service.addTicket(newTicketDto);
+			response = service.addTicket(newTicketDto);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return new ResponseEntity<>(data, HttpStatus.OK);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 
 	}
 
 	@RequestMapping(value = UrlConstants.GET_TICKET_DETAILS)
 	private ResponseEntity<Object> getTicketDetails(@RequestBody Ticket ticket) {
-		NewTicketDto data =new NewTicketDto();
+		NewTicketDto data = new NewTicketDto();
 		try {
 			data = service.getTicketDetails(ticket);
 		} catch (Exception e) {

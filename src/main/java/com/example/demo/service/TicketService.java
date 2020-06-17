@@ -3,9 +3,9 @@
  */
 package com.example.demo.service;
 
-import java.util.List;
-
 import com.example.demo.dto.NewTicketDto;
+import com.example.demo.dto.TicketRequestDto;
+import com.example.demo.dto.TicketResponseDto;
 import com.example.demo.model.Ticket;
 
 /**
@@ -14,9 +14,9 @@ import com.example.demo.model.Ticket;
  */
 public interface TicketService {
 
-	List<Ticket> getTicket();
+	TicketResponseDto getTicket(TicketRequestDto ticketRequestDto);
 
-	List<Ticket> addTicket(NewTicketDto newTicketDto);
+	TicketResponseDto addTicket(NewTicketDto newTicketDto);
 
 	NewTicketDto getTicketDetails(Ticket ticket);
 

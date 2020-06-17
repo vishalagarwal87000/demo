@@ -34,21 +34,16 @@ public class LoginDaoImpl implements LoginDao {
 	}
 
 	@Override
-	public int getUserDetails(String username) {
+	public User getUserDetails(String username) {
 		// TODO Auto-generated method stub
-		int access = 0;
 		User user = null;
 		try {
 			String sql = TicketUtility.readProperties("getUserDetails");
 			user = jdbcTemplate.queryForObject(sql, new Object[] { username }, new UserRowMapper());
-			if (user != null) {
-				access = 1;
-			}
 		} catch (Exception e) {
-//			e.printStackTrace();
-			return access;
+			e.printStackTrace();
 		}
-		return access;
+		return user;
 	}
 
 	@Override

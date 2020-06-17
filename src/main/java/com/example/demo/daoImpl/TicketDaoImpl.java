@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.dao.TicketDao;
 import com.example.demo.dto.NewTicketDto;
+import com.example.demo.dto.TicketResponseDto;
 import com.example.demo.mapper.TicketRowMapper;
 import com.example.demo.mapper.TicketSummaryRowMapper;
 import com.example.demo.model.Ticket;
@@ -29,52 +30,43 @@ public class TicketDaoImpl implements TicketDao {
 	private JdbcTemplate jdbcTemplate;
 
 	@Override
-	public List<Ticket> getTicket() {
+	public TicketResponseDto getTicket(int fromIndex, int toIndex) {
 		// TODO Auto-generated method stub
 		List<Ticket> tickets = new ArrayList<Ticket>();
+		TicketResponseDto response = new TicketResponseDto();
 
 		try {
 			String sql = TicketUtility.readProperties("getTickets");
-			tickets = jdbcTemplate.query(sql, new TicketRowMapper());
+			String sql1 = TicketUtility.readProperties("countTickets");
+			tickets = jdbcTemplate.query(sql, new Object[] { fromIndex, toIndex }, new TicketRowMapper());
+			int length = jdbcTemplate.queryForObject(sql1, Integer.class);
+			response.setTicket(tickets);
+			response.setLength(length);
 		} catch (DataAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return tickets;
-	}
-
-	public List<Ticket> addTicket(Ticket ticket) {
-		List<Ticket> tickets = new ArrayList<Ticket>();
-		String sql1 = TicketUtility.readProperties("addTickets");
-		String sql2 = TicketUtility.readProperties("showTickets");
-
-		int result = jdbcTemplate.update(sql1, ticket.getId(), ticket.getAmount(), ticket.getCategory());
-		if (result == 1) {
-			tickets = jdbcTemplate.query(sql2, new TicketRowMapper());
-		}
-		return tickets;
+		return response;
 	}
 
 	@Override
-	public List<Ticket> addTicket(NewTicketDto newTicketDto, int id, int amount) {
+	public int addTicket(NewTicketDto newTicketDto, int id, int amount) {
 		// TODO Auto-generated method stub
-		List<Ticket> tickets = new ArrayList<Ticket>();
-
+		int updatedRow = 0;
 		try {
 			String sql1 = TicketUtility.readProperties("addTickets");
 			String sql2 = TicketUtility.readProperties("addTicketsSummary");
-
 			int result1 = jdbcTemplate.update(sql1, id, amount, newTicketDto.getCategory());
 			int result2 = jdbcTemplate.update(sql2, id, newTicketDto.getPersonName1(), newTicketDto.getPersonName2(),
 					newTicketDto.getPersonName3(), newTicketDto.getPersonName4(), newTicketDto.getPersonName5());
 			if (result1 == 1 && result2 == 1) {
-				tickets = getTicket();
+				updatedRow = 1;
 			}
 		} catch (DataAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return tickets;
+		return updatedRow;
 	}
 
 	@Override

@@ -3,13 +3,13 @@
  */
 package com.example.demo.serviceImpl;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.TicketDao;
 import com.example.demo.dto.NewTicketDto;
+import com.example.demo.dto.TicketRequestDto;
+import com.example.demo.dto.TicketResponseDto;
 import com.example.demo.model.Ticket;
 import com.example.demo.service.TicketService;
 
@@ -24,31 +24,39 @@ public class TicketServiceImpl implements TicketService {
 	private TicketDao dao;
 
 	@Override
-	public List<Ticket> getTicket() {
+	public TicketResponseDto getTicket(TicketRequestDto ticketRequestDto) {
 		// TODO Auto-generated method stub
-		List<Ticket> data = null;
+		TicketResponseDto response = new TicketResponseDto();
 		try {
-			data = dao.getTicket();
+			int fromIndex = ticketRequestDto.getPageIndex() * ticketRequestDto.getPageSize();
+			int toIndex = (ticketRequestDto.getPageIndex() + 1) * ticketRequestDto.getPageSize();
+			response = dao.getTicket(fromIndex, toIndex);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return data;
+		return response;
 	}
 
 	@Override
-	public List<Ticket> addTicket(NewTicketDto newTicketDto) {
+	public TicketResponseDto addTicket(NewTicketDto newTicketDto) {
 		// TODO Auto-generated method stub
-		List<Ticket> data = null;
+		int updatedRow = 0;
+		TicketResponseDto response = new TicketResponseDto();
 		try {
 			int id = newTicketDto.getTotalTickets() + 1;
 			int amount = newTicketDto.getNoOfPerson() * 200;
-			data = dao.addTicket(newTicketDto, id, amount);
+			updatedRow = dao.addTicket(newTicketDto, id, amount);
+			if (updatedRow == 1) {
+				int fromIndex = newTicketDto.getPageIndex() * newTicketDto.getPageSize();
+				int toIndex = (newTicketDto.getPageIndex() + 1) * newTicketDto.getPageSize();
+				response = dao.getTicket(fromIndex, toIndex);
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return data;
+		return response;
 	}
 
 	@Override

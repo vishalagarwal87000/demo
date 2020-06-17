@@ -11,13 +11,13 @@ public class TicketSummaryRowMapper implements RowMapper<NewTicketDto> {
 
 	@Override
 	public NewTicketDto mapRow(ResultSet rs, int rowNum) throws SQLException {
-		NewTicketDto ntd = new NewTicketDto();
-		ntd.setPersonName1(rs.getString("PERSON 1"));
-		ntd.setPersonName2(rs.getString("PERSON 2"));
-		ntd.setPersonName3(rs.getString("PERSON 3"));
-		ntd.setPersonName4(rs.getString("PERSON 4"));
-		ntd.setPersonName5(rs.getString("PERSON 5"));
-		return ntd;
+		NewTicketDto newTicketDto = new NewTicketDto();
+		newTicketDto.setPersonName1(rs.getString("PERSON 1"));
+		newTicketDto.setPersonName2(rs.getString("PERSON 2"));
+		newTicketDto.setPersonName3(rs.getString("PERSON 3"));
+		newTicketDto.setPersonName4(rs.getString("PERSON 4"));
+		newTicketDto.setPersonName5(rs.getString("PERSON 5"));
+		return newTicketDto;
 
 	}
 

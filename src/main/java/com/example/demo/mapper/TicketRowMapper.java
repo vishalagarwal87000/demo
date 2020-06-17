@@ -18,11 +18,11 @@ public class TicketRowMapper implements RowMapper<Ticket> {
 
 	@Override
 	public Ticket mapRow(ResultSet rs, int rowNum) throws SQLException {
-		Ticket t = new Ticket();
-		t.setId(rs.getInt("ID"));
-		t.setCategory(rs.getString("CATEGORY"));
-		t.setAmount(rs.getDouble("AMOUNT"));
-		return t;
+		Ticket ticket = new Ticket();
+		ticket.setId(rs.getInt("ID"));
+		ticket.setCategory(rs.getString("CATEGORY"));
+		ticket.setAmount(rs.getDouble("AMOUNT"));
+		return ticket;
 
 	}
 
