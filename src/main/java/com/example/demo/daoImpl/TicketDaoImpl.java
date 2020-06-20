@@ -30,7 +30,7 @@ public class TicketDaoImpl implements TicketDao {
 	private JdbcTemplate jdbcTemplate;
 
 	@Override
-	public TicketResponseDto getTicket(int fromIndex, int toIndex) {
+	public TicketResponseDto getTicket(int offset, int size) {
 		// TODO Auto-generated method stub
 		List<Ticket> tickets = new ArrayList<Ticket>();
 		TicketResponseDto response = new TicketResponseDto();
@@ -38,7 +38,7 @@ public class TicketDaoImpl implements TicketDao {
 		try {
 			String sql = TicketUtility.readProperties("getTickets");
 			String sql1 = TicketUtility.readProperties("countTickets");
-			tickets = jdbcTemplate.query(sql, new Object[] { fromIndex, toIndex }, new TicketRowMapper());
+			tickets = jdbcTemplate.query(sql, new Object[] { offset, size }, new TicketRowMapper());
 			int length = jdbcTemplate.queryForObject(sql1, Integer.class);
 			response.setTicket(tickets);
 			response.setLength(length);
@@ -50,12 +50,15 @@ public class TicketDaoImpl implements TicketDao {
 	}
 
 	@Override
-	public int addTicket(NewTicketDto newTicketDto, int id, int amount) {
+	public int addTicket(NewTicketDto newTicketDto, int amount) {
 		// TODO Auto-generated method stub
 		int updatedRow = 0;
 		try {
+			String sql = TicketUtility.readProperties("maxId");
 			String sql1 = TicketUtility.readProperties("addTickets");
 			String sql2 = TicketUtility.readProperties("addTicketsSummary");
+			int id = jdbcTemplate.queryForObject(sql, Integer.class);
+			id += 1;
 			int result1 = jdbcTemplate.update(sql1, id, amount, newTicketDto.getCategory());
 			int result2 = jdbcTemplate.update(sql2, id, newTicketDto.getPersonName1(), newTicketDto.getPersonName2(),
 					newTicketDto.getPersonName3(), newTicketDto.getPersonName4(), newTicketDto.getPersonName5());
@@ -84,5 +87,19 @@ public class TicketDaoImpl implements TicketDao {
 			e.printStackTrace();
 		}
 		return data;
+	}
+
+	@Override
+	public List<Ticket> getExportData() {
+		// TODO Auto-generated method stub
+		List<Ticket> tickets = new ArrayList<Ticket>();
+		try {
+			String sql = TicketUtility.readProperties("getExportData");
+			tickets = jdbcTemplate.query(sql, new TicketRowMapper());
+		} catch (DataAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return tickets;
 	}
 }

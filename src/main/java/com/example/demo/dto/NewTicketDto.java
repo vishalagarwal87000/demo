@@ -7,7 +7,6 @@ public class NewTicketDto {
 	private String personName3;
 	private String personName4;
 	private String personName5;
-	private int totalTickets;
 	private int noOfPerson;
 	private String category;
 	private int pageSize;
@@ -67,14 +66,6 @@ public class NewTicketDto {
 
 	public void setPersonName5(String personName5) {
 		this.personName5 = personName5;
-	}
-
-	public int getTotalTickets() {
-		return totalTickets;
-	}
-
-	public void setTotalTickets(int totalTickets) {
-		this.totalTickets = totalTickets;
 	}
 
 	public int getNoOfPerson() {

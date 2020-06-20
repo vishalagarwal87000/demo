@@ -3,6 +3,9 @@
  */
 package com.example.demo.serviceImpl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +31,8 @@ public class TicketServiceImpl implements TicketService {
 		// TODO Auto-generated method stub
 		TicketResponseDto response = new TicketResponseDto();
 		try {
-			int fromIndex = ticketRequestDto.getPageIndex() * ticketRequestDto.getPageSize();
-			int toIndex = (ticketRequestDto.getPageIndex() + 1) * ticketRequestDto.getPageSize();
-			response = dao.getTicket(fromIndex, toIndex);
+			int offset = ticketRequestDto.getPageIndex() * ticketRequestDto.getPageSize();
+			response = dao.getTicket(offset, ticketRequestDto.getPageSize());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -44,13 +46,12 @@ public class TicketServiceImpl implements TicketService {
 		int updatedRow = 0;
 		TicketResponseDto response = new TicketResponseDto();
 		try {
-			int id = newTicketDto.getTotalTickets() + 1;
 			int amount = newTicketDto.getNoOfPerson() * 200;
-			updatedRow = dao.addTicket(newTicketDto, id, amount);
+			updatedRow = dao.addTicket(newTicketDto, amount);
 			if (updatedRow == 1) {
-				int fromIndex = newTicketDto.getPageIndex() * newTicketDto.getPageSize();
-				int toIndex = (newTicketDto.getPageIndex() + 1) * newTicketDto.getPageSize();
-				response = dao.getTicket(fromIndex, toIndex);
+				int offset = newTicketDto.getPageIndex() * newTicketDto.getPageSize();
+//				int toIndex = (ticketRequestDto.getPageIndex() + 1) * ticketRequestDto.getPageSize();
+				response = dao.getTicket(offset, newTicketDto.getPageSize());
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -70,6 +71,19 @@ public class TicketServiceImpl implements TicketService {
 			e.printStackTrace();
 		}
 		return data;
+	}
+
+	@Override
+	public List<Ticket> getExportData() {
+		// TODO Auto-generated method stub
+		List<Ticket> tickets = null;
+		try {
+			tickets = dao.getExportData();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return tickets;
 	}
 
 }
