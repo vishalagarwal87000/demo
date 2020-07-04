@@ -1,0 +1,92 @@
+<Configuration status="WARN" monitorInterval="30">
+	<!-- Setting Properties such as logging pattern and the directory where 
+		log file will be created. -->
+	<Properties>
+		<Property name="LOG_PATTERN">[%-5level] %d{yyyy-MM-dd HH:mm:ss} %c{1} -
+			%msg%n
+		</Property>
+		<Property name="APP_LOG_ROOT">E:/logs/</Property>
+	</Properties>
+
+	<Appenders>
+		<!-- Console tag is append all the level logs to console -->
+		<Console name="Console" target="SYSTEM_OUT" follow="true">
+			<PatternLayout pattern="${LOG_PATTERN}" />
+		</Console>
+
+		<!-- SizeBasedTriggeringPolicy causes a rollover once the file has reached 
+			the specified size. It will create new log files. -->
+
+		<!-- DefaultRolloverStrategy will check is the maximum number of files 
+			is produced then it will delete the first file created and change the names 
+			accordingly for all the other files. -->
+
+		<!-- RollingFile with name warnlog if to create a warning log file and 
+			append data to application-warn.log file. -->
+
+		<RollingFile name="warnlog"
+			fileName="${sys:APP_LOG_ROOT}/${date:dd-MM-yyyy-HH}/application-warn.log"
+			filePattern="${sys:APP_LOG_ROOT}/application-warn-%d{yyyy-MM-dd}-%i.log">
+			<LevelRangeFilter minLevel="WARN" maxLevel="WARN"
+				onMatch="ACCEPT" onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<SizeBasedTriggeringPolicy size="19500KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+		<!-- RollingFile with name infolog if to create a info log file and append 
+			data to application-info.log file. -->
+
+		<RollingFile name="infoLog"
+			fileName="${sys:APP_LOG_ROOT}/${date:dd-MM-yyyy-HH}/application-info.log"
+			filePattern="${sys:APP_LOG_ROOT}/application-info-%d{yyyy-MM-dd}-%i.log">
+			<LevelRangeFilter minLevel="INFO" maxLevel="INFO"
+				onMatch="ACCEPT" onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<SizeBasedTriggeringPolicy size="1KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+		<!-- RollingFile with name errorlog if to create a info error file and 
+			append data to application-error.log file. -->
+
+		<RollingFile name="errorLog"
+			fileName="${sys:APP_LOG_ROOT}/${date:dd-MM-yyyy-HH}/application-error.log"
+			filePattern="${sys:APP_LOG_ROOT}/application-error-%d{yyyy-MM-dd}-%i.log">
+			<LevelRangeFilter minLevel="ERROR" maxLevel="ERROR"
+				onMatch="ACCEPT" onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<SizeBasedTriggeringPolicy size="19500KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+	</Appenders>
+
+	<Loggers>
+
+		<!-- Binding the package name to logger so that all the logs are simultaneously 
+			saved to the respective files. -->
+
+		<Logger name="com.example.demo" additivity="false">
+			<AppenderRef ref="warnlog" />
+			<AppenderRef ref="infoLog" />
+			<AppenderRef ref="errorLog" />
+			<AppenderRef ref="Console" />
+		</Logger>
+
+		<!-- Binding only info level logs to console. you can change it to all 
+			to get all the level of logs in console. -->
+
+		<Root level="info">
+			<AppenderRef ref="Console" />
+		</Root>
+
+	</Loggers>
+
+</Configuration>

@@ -3,6 +3,8 @@ package com.example.demo.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +20,11 @@ import com.example.demo.util.DropdownDto;
 
 @Controller
 public class LoginController {
-	
+
 	@Autowired
 	private LoginService service;
+
+	private static final Logger LOGGER = LogManager.getLogger(LoginController.class);
 
 	@RequestMapping(value = UrlConstants.GET_ROLES)
 	private ResponseEntity<Object> getRoles() {
@@ -33,9 +37,13 @@ public class LoginController {
 		}
 		return new ResponseEntity<>(data, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = UrlConstants.GET_USER_DETAILS)
-	public ResponseEntity<Object> getUserDetails(@RequestParam("username") String username){
+	public ResponseEntity<Object> getUserDetails(@RequestParam("username") String username) {
+
+		LOGGER.info("Info level log message");
+		LOGGER.warn("warn level log message");
+		LOGGER.error("Error level log message");
 		User user = new User();
 		try {
 			user = service.getUserDetails(username);
@@ -45,9 +53,9 @@ public class LoginController {
 		}
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = UrlConstants.NEW_USER_DETAILS)
-	public ResponseEntity<Object> newUserDetails(@RequestBody User userDetails){
+	public ResponseEntity<Object> newUserDetails(@RequestBody User userDetails) {
 		int updatedRow = 0;
 		try {
 			updatedRow = service.newUserDetails(userDetails);
